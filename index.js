@@ -37,9 +37,9 @@ app.get("/api/add", async (req, res) => {
 // Rest API yang digunakan ketika scanning qr membuat status isExp dari unique code menjadi true
 app.get('/api/done', async (req, res) => {
     const code = req.query.code;
-    const check = JSON.parse(await utils.checkItem(code));
+    const f = await utils.checkItem(code);
     try {
-        res.json(await check.data['isExp'] ? {Error: "Jangan Marukkk"} : await utils.updateData(code, true));
+        res.json(f.data.isExp ? {Error: "Jangan Marukkk"} : await utils.updateData(code, true));
     } catch (error) {
         res.status(500).json({
             message: "Error getting "+error
