@@ -38,7 +38,7 @@ app.get("/api/add", async (req, res) => {
 app.get('/api/done', async (req, res) => {
     const code = req.query.code;
     try {
-        res.json(await utils.updateData(code, true));
+        res.json(await utils.checkItem(code).data.data.isExp ? {Error: "Jangan Marukkk"} :await utils.updateData(code, true));
     } catch (error) {
         res.status(500).json({
             message: "Error getting "+error
