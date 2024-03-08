@@ -18,24 +18,32 @@ const transporter = nodemailer.createTransport({
 });
 
 // Fungsi untuk mengirim email
-function sendEmail(email, code, name, id) {
-    const subject = `Testimoni Undangan`;
+class EmailSender {
+    constructor() {
+       this.emailCount = 1;
+    }
+   
+    sendEmail = (email, code, name, id, counter) => {
+       const subject = `Testimoni Undangan`;
 
-    const emailContent = {
-        to: email,
-        subject: subject,
-        html: template.html(name, code, id),
+       const emailContent = {
+            to: email,
+            subject: subject,
+            html: template.html(name, code, id),
+       };
+        // console.log(emailContent);
+        // Mulai untuk bruteforce ngirim email
+        transporter.sendMail(emailContent, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(`(${this.emailCount}/${counter}) Email terkirim ke ${email}: ` + info.response);
+            }
+        });
+       this.emailCount++;
     };
-    // console.log(emailContent);
-    // Mulai untuk bruteforce ngirim email
-    transporter.sendMail(emailContent, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(`Email terkirim ke ${email}: ` + info.response);
-        }
-    });
 }
+const emailSender = new EmailSender()
 
 // Kirim email ke setiap alamat dengan subjek yang sesuai
 // Kode dibawah ini cuman dipake kalau bener-bener udah fix!!!!! jangan di uncomment
@@ -48,7 +56,7 @@ function sendEmail(email, code, name, id) {
 //         const code = codes[index];
 //         const name = names[index];
 //         const id = ids[index];
-//         sendEmail(email["email"], code["code"], name["name"], id["id"]);
+//         sendEmail(email["email"], code["code"], name["name"], id["id"], emails.length);
 //     });
 // };
 
