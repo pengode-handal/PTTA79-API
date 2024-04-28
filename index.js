@@ -3,7 +3,8 @@ const app = express();
 // const path = require("path");
 const utils = require("./utils");
 const sizeOf = require("image-size");
-const { createCanvas, registerFont, Image } = require("canvas");
+const { createCanvas, loadImage } = require("@napi-rs/canvas");
+const { registerFont } = require("canvas");
 const fontPath = "./fonts/Ruang.ttf";
 registerFont(fontPath, { family: "Ruang" });
 // app.use(express.static(path.resolve(__dirname, "..", "client")));
@@ -19,10 +20,10 @@ app.get("/api/font", async (req, res) => {
     const color = req.query.color || "black";
     const size = parseInt(req.query.size);
 
-    if (!text || !size || isNaN(size)) {
-        res.status(400).send("Parameter teks atau ukuran font tidak valid");
-        return;
-    }
+    // if (!text || !size || isNaN(size)) {
+    //     res.status(400).send("Parameter teks atau ukuran font tidak valid");
+    //     return;
+    // }
     // Membuat canvas
     const canvas = createCanvas(540, 500);
     const ctx = canvas.getContext("2d");
@@ -83,7 +84,7 @@ app.get("/api/font", async (req, res) => {
     res.send(imageBuffer);
 });
 
-const menipulatingImages = (
+const menipulatingImages = async (
     image,
     size = 24,
     text = "Default",
@@ -99,8 +100,7 @@ const menipulatingImages = (
     }
     const canvas = createCanvas(dimensions.width, dimensions.height);
     const ctx = canvas.getContext("2d");
-    var img = new Image();
-    img.src = image;
+    var img = await loadImage(image);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -133,7 +133,7 @@ app.get("/api/images/nadeshiko", async function (req, res) {
     }
     res.contentType("image/png");
     res.send(
-        menipulatingImages(
+        await menipulatingImages(
             "./images/nadeshiko.jpg",
             size,
             text,
@@ -160,7 +160,7 @@ app.get("/api/images/paper", async function (req, res) {
     }
     res.contentType("image/png");
     res.send(
-        menipulatingImages(
+        await menipulatingImages(
             "./images/paper.jpg",
             size,
             text,
@@ -189,7 +189,7 @@ app.get("/api/images/chizuru", async function (req, res) {
     }
     res.contentType("image/png");
     res.send(
-        menipulatingImages(
+        await menipulatingImages(
             "./images/kyaaa.jpg",
             size,
             text,
@@ -220,7 +220,7 @@ app.get("/api/images/nyot", async function (req, res) {
     }
     res.contentType("image/png");
     res.send(
-        menipulatingImages(
+        await menipulatingImages(
             "./images/ahh.jpg",
             size,
             text,
@@ -251,7 +251,7 @@ app.get("/api/images/rikka", async function (req, res) {
     }
     res.contentType("image/png");
     res.send(
-        menipulatingImages(
+        await menipulatingImages(
             "./images/rikka.png",
             size,
             text,
