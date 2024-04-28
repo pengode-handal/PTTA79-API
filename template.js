@@ -1,6 +1,7 @@
 // UIUX untuk undangan
 const html = (name, code, id) => {
     return `
+    <link href="https://fonts.cdnfonts.com/css/ananda-black" rel="stylesheet">
 <div
     style="
         max-width: 600px;
@@ -32,6 +33,7 @@ const html = (name, code, id) => {
                         font-weight: 600;
                         line-height: 29px;
                         color: #1f2d3d;
+                        font-family: 'Ananda Black';
                     ">
                     Hai ${name}! Ini Undangan YTTA
                 </p>

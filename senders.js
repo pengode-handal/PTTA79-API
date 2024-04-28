@@ -53,4 +53,4 @@ function sendEmail(email, code, name, id) {
 // };
 
 // Untuk ngetes doang
-sendEmail("email", "kode", "nama", "id");
+sendEmail("psw@sma3jogja.sch.id", "3342", "Saiph", "1252815sgdy26427gs8");
