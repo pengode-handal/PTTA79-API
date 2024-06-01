@@ -14,7 +14,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@napi-rs/canvas": "^0.1.52",
         "@prisma/client": "^5.10.2",
         "canvas": "^2.11.2",
         "dotenv": "^16.4.5",
