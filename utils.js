@@ -49,13 +49,13 @@ async function checkItem(code) {
 }
 
 //Update database dengan memasukkan unique code lalu mengubah value dari isExp menjadi true atau false
-const updateData = async (code, trufal = true) => {
+const updateData = async (key, code, trufal = true) => {
     await prisma.kakel.update({
         where: {
             code: code,
         },
         data: {
-            isExp: trufal,
+            [key]: trufal,
         },
     });
     return {

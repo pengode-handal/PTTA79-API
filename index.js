@@ -27,13 +27,27 @@ app.get("/api/add", async (req, res) => {
 });
 
 // Rest API yang digunakan ketika scanning qr membuat status isExp dari unique code menjadi true
-app.get("/api/done", async (req, res) => {
+app.get("/api/done/konsum", async (req, res) => {
     try {
         let f = await utils.checkItem(req.query.code);
         res.json(
             f.data.isExp
                 ? { Error: "Jangan Marukkk" }
-                : await utils.updateData(req.query.code, true)
+                : await utils.updateData("isExpKonsum", req.query.code, true)
+        );
+    } catch (error) {
+        res.status(500).json({
+            message: "Error getting " + error,
+        });
+    }
+});
+app.get("/api/done/souvenir", async (req, res) => {
+    try {
+        let f = await utils.checkItem(req.query.code);
+        res.json(
+            f.data.isExp
+                ? { Error: "Jangan Marukkk" }
+                : await utils.updateData("isExpSouvenir", req.query.code, true)
         );
     } catch (error) {
         res.status(500).json({
@@ -43,10 +57,20 @@ app.get("/api/done", async (req, res) => {
 });
 
 // Rest API yang membuat status isExp dari unique code menjadi false
-app.get("/api/undone", async (req, res) => {
+app.get("/api/undone/konsum", async (req, res) => {
     const code = req.query.code;
     try {
-        res.json(await utils.updateData(code, false));
+        res.json(await utils.updateData("isExpKonsum", code, false));
+    } catch (error) {
+        res.status(500).json({
+            message: "Error getting: " + error,
+        });
+    }
+});
+app.get("/api/undone/souvenir", async (req, res) => {
+    const code = req.query.code;
+    try {
+        res.json(await utils.updateData("isExpSouvenir", code, false));
     } catch (error) {
         res.status(500).json({
             message: "Error getting: " + error,

@@ -19,5 +19,6 @@ model Kakel {
   email String  @unique
   name  String
   code  String  @unique
-  isExp Boolean @default(false)
+  isExpKonsum Boolean @default(false)
+  isExpSouvenir Boolean @default(false)
 }
