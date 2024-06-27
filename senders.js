@@ -4,6 +4,8 @@ const nodemailer = require("nodemailer");
 const utils = require("./utils");
 // Import untuk layout UIUX Undangan dari file template.js
 const template = require("./template");
+const fs = require("fs");
+
 require("dotenv").config();
 
 // Konfigurasi transporter untuk mengirim email
@@ -29,16 +31,25 @@ class EmailSender {
         const emailContent = {
             to: email,
             subject: subject,
-            html: template.html(name, code, id),
+            html: template.htmlFIX(name, code, id),
         };
         // console.log(emailContent);
         // Mulai untuk bruteforce ngirim email
+        let that = this;
         transporter.sendMail(emailContent, function (error, info) {
             if (error) {
-                console.log(error);
+                console.log(`Error => ${email}: ${error}`);
+                fs.appendFile(
+                    path.resolve("email.txt"),
+                    `${email}\n`,
+                    function (err) {
+                        if (err) return console.log(err);
+                        console.log(`${email} sudah ditambahkan ke email.txt `);
+                    }
+                );
             } else {
                 console.log(
-                    `(${this.emailCount}/${counter}) Email terkirim ke ${email}: ` +
+                    `${that.emailCount}. Sip Email terkirim ke ${email}: ` +
                         info.response
                 );
             }
@@ -50,18 +61,35 @@ const emailSender = new EmailSender();
 
 // Kirim email ke setiap alamat dengan subjek yang sesuai
 // Kode dibawah ini cuman dipake kalau bener-bener udah fix!!!!! jangan di uncomment
-// const execEmail = async () => {
-//     let emails = await utils.getSelectedItems("email");
-//     let codes = await utils.getSelectedItems("code");
-//     let names = await utils.getSelectedItems("name");
-//     let ids = await utils.getSelectedItems("id");
-//     emails.forEach((email, index) => {
-//         const code = codes[index];
-//         const name = names[index];
-//         const id = ids[index];
-//         sendEmail(email["email"], code["code"], name["name"], id["id"], emails.length);
-//     });
-// };
+const execEmail = async () => {
+    let emails = await utils.getSelectedItems("email");
+    let codes = await utils.getSelectedItems("code");
+    let names = await utils.getSelectedItems("name");
+    let ids = await utils.getSelectedItems("id");
+    let interval = 6000;
+    emails.forEach((email, index) => {
+        setTimeout(() => {
+            const code = codes[index];
+            const name = names[index];
+            const id = ids[index];
+            emailSender.sendEmail(
+                email["email"],
+                code["code"],
+                name["name"],
+                id["id"],
+                emails.length
+            );
+        }, index * interval);
+    });
+    console.log("Selesai");
+};
+execEmail();
 
 // Untuk ngetes doang
-sendEmail("psw@sma3jogja.sch.id", "3342", "Saiph", "1252815sgdy26427gs8");
+// emailSender.sendEmail(
+//     "psw@sma3jogja.sch.id",
+//     "3342",
+//     "Saiph",
+//     "1252815sgdy26427gs8",
+//     1
+// );

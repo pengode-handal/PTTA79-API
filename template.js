@@ -224,6 +224,137 @@ const html = (name, code, id) => {
 </div>`;
 };
 
+const html1 = (name, code, id) => {
+    return `<link href="https://fonts.cdnfonts.com/css/ananda-black" rel="stylesheet" 
+    />
+        <div
+            style="
+                width: 709px;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #fff;
+                border-radius: 8px;
+                border-color: #dde2e8;
+                border-width: 1px;
+                border-style: solid;
+                overflow: hidden;
+            ">
+            <div>
+                <div>
+                    <img
+                        style="width: 100%"
+                        src="https://i.ibb.co.com/ZNNzL4w/pttahead.jpg"
+                        tabindex="0" />
+                </div>
+    
+                <div style="
+                text-align: center;
+                background-image: url(https://i.ibb.co.com/0YvtJTs/pttabody.jpg);
+                width: 709px;
+                height: 472px;
+                background-size: cover;
+                background-position: center;
+                ">
+                    <div
+                    style="
+                    width: 100%;
+                    height: 100%;
+                    "
+                    >
+                    <div
+                        style="
+                        height: 50px;
+                        "
+                    ></div>
+                        <img
+                            src="https://pttagacor.vercel.app/api/font?q=${name}&size=80&h=290&w=500"
+                            alt=""
+                            style="
+                            height: 200px;
+                            "/>
+                        <a
+                        href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
+                        style="
+                            display: block;
+                            background-color: transparent;;
+                            color: transparent;
+                            border-radius: 90px;
+                            height: 75px;
+                            width: 100%;
+                            z-index: 9999;
+                        "
+                        >Click Here</a>
+                    </div>
+                </div>
+            </div>
+            <img
+            style="width: 23px"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}"
+            alt="" />
+        </div>
+    `;
+};
+const htmlFIX = (name, code, id) => {
+    return `<body>
+    <link href="https://fonts.cdnfonts.com/css/ananda-black" rel="stylesheet" />
+    <div
+        style="
+            width: 547px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            border-color: #dde2e8;
+            border-width: 1px;
+            border-style: solid;
+            overflow: hidden;
+        ">
+        <div>
+            <div
+                style="
+                    text-align: center;
+                    background-image: url(https://i.ibb.co.com/yXQPJXk/desain-undangan-tiga-banding-empat.png);
+                    width: 547px;
+                    height: 729px;
+                    background-size: cover;
+                    background-position: center;
+                ">
+                <div style="width: 100%; height: 100%">
+                    <div style="height: 182px"></div>
+                    <img
+                        src="https://pttagacor.vercel.app/api/font?q=${name}&size=65&h=290&w=500&color==FFC6D3"
+                        alt=""
+                        style="height: 200px" />
+                    <div style="height: 39px"></div>
+                    <a
+                        href="https://www.youtube.com/watch?v=xvFZjo5PgG0"
+                        target="_blank"
+                        style="
+                            display: block;
+                            background-color: transparent;
+                            color: transparent;
+                            border-radius: 90px;
+                            height: 45px;
+                            width: 37.4%;
+                            margin-left: 187px;
+                            z-index: 9999;
+                        "
+                        >Click Here</a
+                    >
+                    <div style="height: 95px"></div>
+                    <img
+                        style="width: 125px; margin-left: 285px"
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=125x125&data=${code}"
+                        alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+    `;
+};
 module.exports = {
     html,
+    html1,
+    htmlFIX,
 };

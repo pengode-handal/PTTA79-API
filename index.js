@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 // const path = require("path");
 const utils = require("./utils");
-
+app.use(cors());
 app.get("/api/check", async (req, res) => {
     res.json(await utils.checkItem(req.query.code));
 });
