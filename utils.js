@@ -83,9 +83,12 @@ async function checkItem(code, category = null) {
 }
 
 async function checkItemByEmail(email, category = null) {
-    const item = await prisma.kakel.findUnique({
+    const item = await prisma.kakel.findMany({
         where: {
-            email: email,
+            email: {
+                equals: email,
+                mode: "insensitive",
+            },
         },
     });
     let listCategory = [

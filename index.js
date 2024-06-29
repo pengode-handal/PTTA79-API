@@ -5,7 +5,11 @@ const cors = require("cors");
 const utils = require("./utils");
 app.use(cors());
 app.get("/api/check", async (req, res) => {
-    res.json(await utils.checkItem(req.query.code));
+    if (req.query.code) {
+        res.json(await utils.checkItem(req.query.code));
+    } else {
+        res.json(await utils.checkItemByEmail(req.query.email));
+    }
 });
 
 // Index website
