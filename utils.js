@@ -21,23 +21,118 @@ const createData = async (nama, email) => {
 };
 
 // Cari item berdasarkan kode tertentu
-async function checkItem(code) {
+async function checkItem(code, category = null) {
     const item = await prisma.kakel.findUnique({
         where: {
             code: code,
         },
     });
-
+    let listCategory = [
+        "isExpKonsumAppt",
+        "isExpKonsumMain",
+        "isExpKonsumDessert",
+        "isExpSouvenir",
+    ];
     // Jika item ditemukan dan isExp masih false, lakukan hal ini
     if (item) {
-        if (item.isExp === false) {
-            return {
-                message: "Msih Bisa Dipake",
-                data: item,
-            };
+        const expired = (data, category) => {
+            if (data[category] === false) {
+                return "Bisa ditukar";
+            } else {
+                return "Udah dituker";
+            }
+        };
+        if (category) {
+            if (!item[category]) {
+                return {
+                    error: "Category not found",
+                    availableCategory: [
+                        "isExpKonsumAppt",
+                        "isExpKonsumMain",
+                        "isExpKonsumDessert",
+                        "isExpSouvenir",
+                    ],
+                };
+            } else {
+                if (item[category] === false) {
+                    return {
+                        message: "Bisa Ditukar",
+                        expired: false,
+                    };
+                } else {
+                    return {
+                        message: "TIDAK bisa Ditukar",
+                        expired: true,
+                    };
+                }
+            }
         } else {
             return {
-                message: "Ga Bisa Dipake",
+                Souvenir: expired(item, listCategory[3]),
+                Appetizer: expired(item, listCategory[0]),
+                MainCouse: expired(item, listCategory[1]),
+                Dessert: expired(item, listCategory[2]),
+                data: item,
+            };
+        }
+    } else {
+        return {
+            message: "Data Tidak Ditemukan",
+        };
+    }
+}
+
+async function checkItemByEmail(email, category = null) {
+    const item = await prisma.kakel.findUnique({
+        where: {
+            email: email,
+        },
+    });
+    let listCategory = [
+        "isExpKonsumAppt",
+        "isExpKonsumMain",
+        "isExpKonsumDessert",
+        "isExpSouvenir",
+    ];
+    // Jika item ditemukan dan isExp masih false, lakukan hal ini
+    if (item) {
+        const expired = (data, category) => {
+            if (data[category] === false) {
+                return "Bisa ditukar";
+            } else {
+                return "Udah dituker";
+            }
+        };
+        if (category) {
+            if (!item[category]) {
+                return {
+                    error: "Category not found",
+                    availableCategory: [
+                        "isExpKonsumAppt",
+                        "isExpKonsumMain",
+                        "isExpKonsumDessert",
+                        "isExpSouvenir",
+                    ],
+                };
+            } else {
+                if (item[category] === false) {
+                    return {
+                        message: "Bisa Ditukar",
+                        expired: false,
+                    };
+                } else {
+                    return {
+                        message: "TIDAK bisa Ditukar",
+                        expired: true,
+                    };
+                }
+            }
+        } else {
+            return {
+                Souvenir: expired(item, listCategory[3]),
+                Appetizer: expired(item, listCategory[0]),
+                MainCouse: expired(item, listCategory[1]),
+                Dessert: expired(item, listCategory[2]),
                 data: item,
             };
         }
@@ -49,6 +144,7 @@ async function checkItem(code) {
 }
 
 //Update database dengan memasukkan unique code lalu mengubah value dari isExp menjadi true atau false
+// ################# BERDASARKAN KODE #################
 const updateData = async (key, code, trufal = true) => {
     await prisma.kakel.update({
         where: {
@@ -64,6 +160,21 @@ const updateData = async (key, code, trufal = true) => {
     };
 };
 
+// ################# BERDASARKAN KODE #################
+const updateDataByEmail = async (key, email, trufal = true) => {
+    await prisma.kakel.update({
+        where: {
+            email: email,
+        },
+        data: {
+            [key]: trufal,
+        },
+    });
+    return {
+        message: "Successfully updated",
+        data: await checkItemByEmail(email),
+    };
+};
 // Menghapus item berdasarkan code
 const deleteItem = async (code) => {
     if (!code) return { message: "Isi dulu" };
@@ -96,4 +207,6 @@ module.exports = {
     rand,
     getAllItems,
     getSelectedItems,
+    checkItemByEmail,
+    updateDataByEmail,
 };
